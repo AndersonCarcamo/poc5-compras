@@ -269,7 +269,7 @@ class EventBroker:
         try:
             # Simplemente mantenemos el proceso vivo
             while True:
-                time.sleep(1)
+                # time.sleep(1)
                 # Si la conexión se perdió, intentar reconectar
                 if not self.connection.is_open:
                     print("Conexión perdida. Intentando reconectar...")
