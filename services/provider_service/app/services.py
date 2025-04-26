@@ -6,23 +6,29 @@ from datetime import datetime
 
 def assign_vendor(items: list) -> str:
     # Asigna un proveedor basado en los items
-    return items[0]["supplier_id"]  # Lógica simplificada
+    return items[0]["supplier_id"]
 
 def process_provider_order(order_data: ProviderOrderCreate, db: Session):
-    # Guarda la orden en la base de datos (Debe persistir esta información)
+    # asigno proveedor si no viene en el payload
+    if not order_data.vendor_id:
+        order_data.vendor_id = assign_vendor(order_data.items)
+        
+    items_json = [item.dict() for item in order_data.items]
+    
+    # Guarda la orden en la base de datos
     db_order = ProviderOrder(
         order_id=order_data.order_id,
         vendor_id=order_data.vendor_id,
-        items=order_data.items,
-        status="reserved" # campo de estado para monitorizar el estado de la orden/pedido
+        items=items_json,
+        status="reserved" # estado de la orden/pedido
     )
     db.add(db_order)
     db.commit()
 
-    # 2. Publicar evento de stock reservado
+    # evento de stock reservado
     reserved_payload = StockReserved(
         order_id=order_data.order_id,
-        reserved_items=order_data.items
+        reserved_items=items_json
     )
     publish_stock_reserved(reserved_payload)
 
