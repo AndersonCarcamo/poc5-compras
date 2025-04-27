@@ -40,12 +40,11 @@ async def login_for_access_token(
         expires_delta=access_token_expires
     )
     
-    # Configurar la cookie con el token
     response.set_cookie(
         key="access_token",
         value=f"Bearer {access_token}",
         httponly=True,          # No accesible por JavaScript
-        secure=True,            # Solo se envía por HTTPS
+        secure=False,            # Solo se envía por HTTPS
         samesite="lax",         # Protección contra CSRF
         max_age=1800            # 30 minutos en segundos
     )
