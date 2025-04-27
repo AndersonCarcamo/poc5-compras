@@ -9,6 +9,9 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def get_password_hash(password):
     return pwd_context.hash(password)
 
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
 def create_user(db: Session, user: UserCreate):
     hashed_password = get_password_hash(user.password)
     db_user = User(
@@ -29,7 +32,7 @@ def create_user(db: Session, user: UserCreate):
         event_type="created",
         hashed_password=hashed_password  
     )
-    publish_user_event(user_event)
+    # publish_user_event(user_event)
     
     return db_user
 
@@ -63,6 +66,6 @@ def update_user(db: Session, user_id: int, user_data: UserUpdate):
         email=db_user.email,
         event_type="updated"
     )
-    publish_user_event(user_event)
+    # publish_user_event(user_event)
     
     return db_user

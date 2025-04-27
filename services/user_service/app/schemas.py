@@ -33,3 +33,7 @@ class UserEvent(BaseModel):
     email: str
     event_type: str  # 'created', 'updated', 'deleted'
     hashed_password: Optional[str] = None 
+    
+class UserCredentials(BaseModel):
+    username: str
+    password: str
