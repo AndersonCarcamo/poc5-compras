@@ -17,3 +17,7 @@ sqlalchemy>=1.4.0
 psycopg2-binary>=2.9.0
 pydantic-settings>=2.0.0
 uvicorn>=0.22.0
+# Para autenticación
+passlib[bcrypt]>=1.7.4   # Manejo de hashing de contraseñas
+python-jose[cryptography]>=3.3.0  # JWT tokens
+python-multipart>=0.0.5  # Para procesar form-data
